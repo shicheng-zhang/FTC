@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
 
-@TeleOp(name = "01 (Blocks to Java)")
+@TeleOp(name = "teleoFarmTeam (Blocks to Java)")
 public class teleoFarmTeam extends LinearOpMode {
 
   private CRServo feed;
@@ -43,17 +43,17 @@ public class teleoFarmTeam extends LinearOpMode {
    * the direction of all 4 motors (see code below).
    */
   @Override
-  public void runOpMode () {
+  public void runOpMode() {
     ElapsedTime runtime;
 
-    feed = hardwareMap.get (CRServo.class, "feed");
-    flywheel = hardwareMap.get (DcMotor.class, "flywheel");
-    backLeft = hardwareMap.get (DcMotor.class, "backLeft");
-    backRight = hardwareMap.get (DcMotor.class, "backRight");
-    frontRight = hardwareMap.get (DcMotor.class, "frontRight");
-    frontLeft = hardwareMap.get (CRServo.class, "frontLeft");
+    feed = hardwareMap.get(CRServo.class, "feed");
+    flywheel = hardwareMap.get(DcMotor.class, "flywheel");
+    backLeft = hardwareMap.get(DcMotor.class, "backLeft");
+    backRight = hardwareMap.get(DcMotor.class, "backRight");
+    frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+    frontLeft = hardwareMap.get(CRServo.class, "frontLeft");
 
-    runtime = new ElapsedTime ();
+    runtime = new ElapsedTime();
     shootVelocity = 1200;
     // ########################################################################################
     // !!! IMPORTANT Drive Information. Test your motor directions. !!!!!
@@ -70,97 +70,92 @@ public class teleoFarmTeam extends LinearOpMode {
     // Reverse the direction (flip FORWARD <-> REVERSE ) of any wheel that runs backward.
     // Keep testing until ALL the wheels move the robot forward when you push the left joystick forward.
     // <--- Click blue icon to see important note re. testing motor directions.
-    
-	//Set Flywheel direction and Velocity Set
-	flywheel.setMode (DcMotor.RunMode.RUN_USING_ENCODER);
-    flywheel.setDirection (DcMotor.Direction.REVERSE);
-    
-	//Orientation of Motor Spin
-	backLeft.setDirection (DcMotor.Direction.REVERSE);
-    backRight.setDirection (DcMotor.Direction.FORWARD);  
-	frontLeft.setDirection (CRServo.Direction.FORWARD);
-	frontRight.setDirection (CRServo.Direction.FORWARD);
-    
-	//Zero Power Behaviour for Drive Motors
-	frontLeft.setZeroPowerBehaviour (DcMotor.ZeroPowerBehavious.BRAKE);
-	frontRight.setZeroPowerBehavior (DcMotor.ZeroPowerBehavior.BRAKE);
-    backLeft.setZeroPowerBehavior (DcMotor.ZeroPowerBehavior.BRAKE);
-    backRight.setZeroPowerBehavior (DcMotor.ZeroPowerBehavior.BRAKE);
-    
-	//Set Direction of Feed Motors
-	feed.setDirection (CRServo.Direction.FORWARD);
-    
-	// Wait for init (driver presses START)
-    telemetry.addData ("Status", "Initialized");
-    telemetry.update ();
-    waitForStart ();
-    runtime.reset ();
-    
-	// Run until sigterm (driver presses STOP)
-    while (opModeIsActive ()) {
-      feed.setPower (gamepad1.left_trigger);
+    flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    backLeft.setDirection(DcMotor.Direction.REVERSE);
+    backRight.setDirection(DcMotor.Direction.FORWARD);
+    flywheel.setDirection(DcMotor.Direction.REVERSE);
+    frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    feed.setDirection(CRServo.Direction.FORWARD);
+    frontLeft.setDirection(CRServo.Direction.FORWARD);
+    // Wait for the game to start (driver presses START)
+    telemetry.addData("Status", "Initialized");
+    telemetry.update();
+    waitForStart();
+    runtime.reset();
+    // Run until the end of the match (driver presses STOP)
+    while (opModeIsActive()) {
+      feed.setPower(gamepad1.left_trigger);
       if (gamepad1.right_trigger > 0.1) {
-        launch ();
+        launch();
       } else {
-        flywheel.setPower (0.15);
-      } drive ();
-      // Show elapsed game time and wheel power consumption
-      telemetry.addData ("Status", "Run Time: " + runtime);
-      telemetry.addData ("Front left/Right", JavaUtil.formatNumber (frontLeftPower, 4, 2) + ", " + JavaUtil.formatNumber (frontRightPower, 4, 2));
-      telemetry.addData ("Back  left/Right", JavaUtil.formatNumber (backLeftPower, 4, 2) + ", " + JavaUtil.formatNumber (backRightPower, 4, 2));
-      telemetry.update ();
+        flywheel.setPower(gamepad2.right_stick_y);
+      }
+      drive();
+      // Show the elapsed game time and wheel power.
+      telemetry.addData("Status", "Run Time: " + runtime);
+      telemetry.addData("Front left/Right", JavaUtil.formatNumber(frontLeftPower, 4, 2) + ", " + JavaUtil.formatNumber(frontRightPower, 4, 2));
+      telemetry.addData("Back  left/Right", JavaUtil.formatNumber(backLeftPower, 4, 2) + ", " + JavaUtil.formatNumber(backRightPower, 4, 2));
+      telemetry.update();
     }
   }
 
   /**
    * Describe this function...
    */
-  private void drive () {
-    float axial; //Front Back
-    float lateral; //Left Right Strafe
-    float yaw; //Left Right Rotation
-    double max; //Restriction to wheel power consumption
+  private void drive() {
+    float axial;
+    float lateral;
+    float yaw;
+    double max;
 
-    frontLeft.setPower (frontLeftPower);
-    frontRight.setPower (frontRightPower);
-    backLeft.setPower (backLeftPower);
-    backRight.setPower (backRightPower);
-    // POV Mode uses left joystick for forward and strafing, and right joystick for rotation.
+    frontLeft.setPower(frontLeftPower);
+    frontRight.setPower(frontRightPower);
+    backLeft.setPower(backLeftPower);
+    backRight.setPower(backRightPower);
+    // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
     // Note: pushing stick forward gives negative value
     axial = -gamepad1.left_stick_y;
     lateral = gamepad1.left_stick_x;
     yaw = gamepad1.right_stick_x;
-    // Combine the joystick input for desired power draw
+    // Combine the joystick requests for each axis-motion to determine each wheel's power.
+    // Set up a variable for each drive wheel to save the power level for telemetry.
     frontLeftPower = axial + lateral + yaw;
     frontRightPower = (axial - lateral) - yaw;
     backLeftPower = (axial - lateral) + yaw;
     backRightPower = (axial + lateral) - yaw;
-    // Buffer check if wheel power exceeds 100
-    max = JavaUtil.maxOfList (JavaUtil.createListWith (Math.abs (frontLeftPower), Math.abs (frontRightPower), Math.abs (backLeftPower), Math.abs (backRightPower))); //Power Overflow: max > 1
+    // Normalize the values so no wheel power exceeds 100%
+    // This ensures that the robot maintains the desired motion.
+    max = JavaUtil.maxOfList(JavaUtil.createListWith(Math.abs(frontLeftPower), Math.abs(frontRightPower), Math.abs(backLeftPower), Math.abs(backRightPower)));
     if (max > 1) {
       frontLeftPower = frontLeftPower / max;
       frontRightPower = frontRightPower / max;
       backLeftPower = backLeftPower / max;
       backRightPower = backRightPower / max;
     }
+    testMotorDirections();
+    // Send calculated power to wheels.
   }
 
-  //Launch Motor Settings
-  private void launch () {
-    flywheel.setPower (-1);
-    feed.setPower (-1);
-    sleep (850);
-    feed.setPower (0);
+  /**
+   * Describe this function...
+   */
+  private void launch() {
+    flywheel.setPower(-1);
+    feed.setPower(-1);
+    sleep(250);
+    feed.setPower(0);
     while (gamepad1.right_trigger > 0.1) {
-      ((DcMotorEx) flywheel).setVelocity (shootVelocity);
-      drive ();
-      if (((DcMotorEx) flywheel).getVelocity () < shootVelocity - 50) {
-        ((DcMotorEx) flywheel).setVelocity (shootVelocity);
-		//Too Low Launch SPD
-        feed.setPower (0);
+      ((DcMotorEx) flywheel).setVelocity(shootVelocity);
+      drive();
+      if (((DcMotorEx) flywheel).getVelocity() < shootVelocity - 50) {
+        ((DcMotorEx) flywheel).setVelocity(shootVelocity);
+        feed.setPower(0);
       } else {
-        feed.setPower (1);
-      } telemetry.update ();
+        feed.setPower(1);
+      }
+      telemetry.update();
     }
   }
 
@@ -169,11 +164,11 @@ public class teleoFarmTeam extends LinearOpMode {
    *
    * Each button should make the corresponding motor run FORWARD.
    *
-   *   1) First set all the motors to take to correct positions preset
-   *      by adjusting robot config
+   *   1) First get all the motors to take to correct positions on the robot
+   *      by adjusting your Robot Configuration if necessary.
    *
    *   2) Then make sure they run in the correct direction by modifying the
-   *      the setDirection () definitions above.
+   *      the setDirection() calls above.
    */
   private void testMotorDirections() {
     frontLeftPower = gamepad1.x ? 1 : 0;
@@ -182,3 +177,4 @@ public class teleoFarmTeam extends LinearOpMode {
     backRightPower = gamepad1.b ? 1 : 0;
   }
 }
+
