@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.JavaUtil;
 
 @TeleOp(name = "teleoFarmTeam (Blocks to Java)")
 public class teleoFarmTeam extends LinearOpMode {
-  
+
   private CRServo feed;
   private DcMotor flywheel;
   private DcMotor backLeft;
@@ -175,6 +175,6 @@ public class teleoFarmTeam extends LinearOpMode {
     backLeftPower = gamepad1.a ? 1 : 0;
     frontRightPower = gamepad1.y ? 1 : 0;
     backRightPower = gamepad1.b ? 1 : 0;
-  } 
+  }
 }
 
