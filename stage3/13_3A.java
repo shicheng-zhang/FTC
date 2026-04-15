@@ -6,9 +6,9 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 /*
- * This file is 01N, a buffering file as a edit of the original 01.Java.
+ * This file is 13_3A, or in naming before 15/04/26 as 01N, a buffering file as a edit of the original 01.Java, now called 01_1.java.
  * This is not the actual file for running teleoperations
- * For that refer to the new 01R file
+ * For that refer to the new 13_3.java file
  *
  * */
 
