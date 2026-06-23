@@ -1,5 +1,4 @@
 package org.firstinspires.ftc.teamcode;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -11,17 +10,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * For that refer to the new 13_3.java file
  *
  * */
-
 @TeleOp(name = "_012 (Blocks to Java)")
 public class _012 extends LinearOpMode {
-
   private DcMotor backRight;
   private DcMotor frontRight;
   private DcMotor frontLeft;
   private DcMotor backLeft;
   private CRServo feed;
   private CRServo launcher;
-
   /**
    * This function is executed when this Op Mode is selected.
    */
